@@ -1,0 +1,41 @@
+@import url('./fonts.css');
+@import url('./variables.css');
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.container {
+  max-width: 1168px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card-shadow {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.divider {
+  background-color: rgba(0,0,0,0.12);
+  height: 1px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: opacity 0.2s;
+}
+
+a:hover {
+  opacity: 0.72;
+}
+
+
+a:active {
+  opacity: 0.56;
+}
