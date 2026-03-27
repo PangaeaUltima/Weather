@@ -3,7 +3,7 @@ import type { App } from 'vue';
 import axios from 'axios'
 
 const ipApi = axios.create({
-  baseURL: 'http://ip-api.com/',
+  baseURL: 'https://free.freeipapi.com/api/',
 })
 
 const weatherApi = axios.create({

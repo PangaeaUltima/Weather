@@ -1,26 +1,31 @@
 import type { AxiosInstance } from "axios"
 
 export type IpData = {
-  query: string
-  status: string
-  country: string
+  ipVersion: number
+  latitude: number
+  longitude: number
+  countryName: string
   countryCode: string
-  region: string
+  capital: string
+  phoneCodes: number[]
+  timeZones: string[]
+  zipCode: string
+  cityName: string
   regionName: string
-  city: string
-  zip: string
-  lat: number
-  lon: number
-  timezone: string
-  isp: string
-  org: string
-  as: string
+  regionCode: string | null
+  continent: string | null
+  continentCode: string | null
+  currencies: string[]
+  languages: string[]
+  asn: string
+  asnOrganization: string
+  isProxy: boolean
 }
 
 export default ($api: AxiosInstance) => {
   return {
     me(): Promise<IpData> {
-      return $api.get('/json/')
+      return $api.get('/json')
     },
   }
 }

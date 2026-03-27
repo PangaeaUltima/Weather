@@ -13,8 +13,11 @@ onMounted(() => detectUserCity())
 
 const detectUserCity = async () => {
   try {
-    const res = await ipRepo.me()
-    citiesCoords.value.push({ lat: res.lat, lon: res.lon })
+    const { latitude, longitude } = await ipRepo.me()
+
+    if (!latitude || !longitude) return
+    
+    citiesCoords.value.push({ lat: latitude, lon: longitude })
   } catch (e) {
     console.error(e)
   }

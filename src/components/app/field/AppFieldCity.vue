@@ -4,11 +4,11 @@ import { useRepo } from '@/composables/useRepo';
 import { computed, ref, watch } from 'vue'
 import type { CoordsListItem } from '@/api/geo';
 import { useDebounceFn } from '@vueuse/core';
-import type { SelectedCityValue } from '@/types';
+import type { Coords } from '@/types';
 
 const { geoRepo } = useRepo()
 
-const model = defineModel<SelectedCityValue | null>({ default: null })
+const model = defineModel<Coords | null>({ default: null })
 
 const items = ref<CoordsListItem[]>([])
 const search = ref<string | null>(null)
