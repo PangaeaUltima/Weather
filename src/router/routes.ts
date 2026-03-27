@@ -1,15 +1,7 @@
 import type { RouteRecordRaw } from "vue-router"
+import FavoritesView from "@/views/FavoritesView.vue"
 import HomeView from "@/views/HomeView.vue"
 import DefaultLayout from "@/layouts/DefaultLayout.vue"
-
-// export default [
-//   {
-//     path: '/', 
-//     name: 'Home',
-//     component: HomeView,
-//     meta: { layout: 'DefaultLayout' },
-//   }
-// ] as RouteRecordRaw[]
 
 export default [
   {
@@ -20,6 +12,11 @@ export default [
         path: '',
         name: 'Home',
         component: HomeView
+      },
+      {
+        path: '/favorites',
+        name: 'Favorites',
+        component: FavoritesView,
       }
     ]
   }

@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import IconFavorite from '@/components/icon/IconFavorite.vue';
+import UiIconButton from '@/components/ui/UiIconButton.vue';
 import { useRepo } from '@/composables/useRepo';
 import type { ForecastData } from '@/api/forecast';
 import type { WeatherData } from '@/api/weather';
 import type { Coords } from '@/types';
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import dayjs from '@/plugins/dayjs'
-
-import { computed } from 'vue'
+import { useFavoriteStore } from '@/stores/favorite';
 
 const props = defineProps<{
   coords: Coords
 }>()
 
+const favoriteStore = useFavoriteStore()
 const { forecastRepo, weatherRepo } = useRepo()
 
 const currentWeather = ref<WeatherData | null>(null)
@@ -43,12 +45,26 @@ const loadWeather = async () => {
   <div
     v-if="currentWeather && forecast"
     class="weather-card card-shadow"
+    :class="{ 'favorite' : favoriteStore.isFavorite(coords) }"
   >
     <div class="overall">
       <div class="overall-current-temp">
-        <span>
-          {{ forecast.city.name }}
-        </span>
+        <div class="city-name">
+          <span>
+            {{ forecast.city.name }}
+          </span>
+
+          <UiIconButton
+            size="24"
+            @click="favoriteStore.toggleFavorite(coords)"
+          >
+            <IconFavorite
+              class="icon-favorite"
+              :outlined="!favoriteStore.isFavorite(coords)"
+            />
+          </UiIconButton>
+        </div>
+       
         <span class="current-temp">
           {{ currentWeather.main.temp.toFixed() }}°
         </span>
@@ -143,5 +159,15 @@ const loadWeather = async () => {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.weather-card .city-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.weather-card.favorite .icon-favorite {
+  color: var(--primary);
 }
 </style>

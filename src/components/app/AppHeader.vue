@@ -6,7 +6,10 @@
     <div class="container">
       <div class="wrapper">
         <div class="logo">
-          <img src="/logo.png" alt="">
+          <img
+            src="/logo.png"
+            alt=""
+          >
         </div>
 
         <div class="navigation">
@@ -14,7 +17,7 @@
             <RouterLink :to="{ name: 'Home' }">
               Головна
             </RouterLink>
-            <RouterLink :to="{ name: 'Home' }">
+            <RouterLink :to="{ name: 'Favorites' }">
               Вибране
             </RouterLink>
           </nav>

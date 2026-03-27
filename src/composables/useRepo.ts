@@ -15,5 +15,4 @@ export const useRepo = () => {
     ipRepo: ip(ipApi as AxiosInstance),
     weatherRepo: weather(weatherApi as AxiosInstance)
   }
-
 }

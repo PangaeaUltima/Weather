@@ -39,3 +39,7 @@ a:hover {
 a:active {
   opacity: 0.56;
 }
+
+p {
+  margin: 0;
+}

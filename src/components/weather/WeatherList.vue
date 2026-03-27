@@ -5,7 +5,6 @@ import type { Coords } from '@/types';
 defineProps<{
   citiesCoords: Coords[]
 }>()
-
 </script>
 
 <template>
