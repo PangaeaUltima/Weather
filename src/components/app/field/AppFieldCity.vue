@@ -29,6 +29,10 @@ const loadData = useDebounceFn(async () => {
 }, 400)
 
 watch(search, () => loadData())
+
+defineExpose({
+  clearSearch: () => search.value = null
+})
 </script>
 
 <template>

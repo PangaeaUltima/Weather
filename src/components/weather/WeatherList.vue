@@ -21,6 +21,20 @@ defineProps<{
 .weather-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 16px 32px;
+  grid-gap: 32px;
+}
+
+@media (max-width: 860px) {
+  .weather-list {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 24px;
+  }
+}
+
+@media (max-width: 540px) {
+  .weather-list {
+    grid-template-columns: 1fr;
+    grid-gap: 16px;
+  }
 }
 </style>

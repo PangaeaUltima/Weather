@@ -2,7 +2,9 @@
 import AppFieldCity from '@/components/app/field/AppFieldCity.vue';
 import UiButton from '@/components/ui/UiButton.vue';
 import type { Coords } from '@/types';
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
+
+const fieldCity = useTemplateRef('refFieldCity')
 
 const citiesCoords = defineModel<Coords[]>({ default: [] })
 
@@ -15,12 +17,14 @@ const addCity = () => {
 
   citiesCoords.value.push(selectedCity.value)
   selectedCity.value = null
+  fieldCity.value?.clearSearch()
 }
 </script>
 
 <template>
   <div class="home-field-city">
     <AppFieldCity
+      ref="refFieldCity"
       v-model="selectedCity"
       class="app-field-city"
     />
@@ -34,7 +38,7 @@ const addCity = () => {
 <style scoped>
 .home-field-city .app-field-city {
   align-self: flex-start;
-  min-width: 300px;
+  min-width: 240px;
 }
 
 .home-field-city {

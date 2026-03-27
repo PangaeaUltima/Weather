@@ -111,7 +111,6 @@ const loadWeather = async () => {
 <style>
 .weather-card {
   padding: 16px;
-  max-width: 420px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

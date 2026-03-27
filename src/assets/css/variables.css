@@ -5,4 +5,6 @@
   --text-secondary: #6B7280;
   --border: #E5E7EB;
   --warning: #EF4444;
+
+  --breakpoint-mobile: 768px;
 }
