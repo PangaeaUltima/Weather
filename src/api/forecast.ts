@@ -57,6 +57,7 @@ export type ForecastParams = {
   lon: number
   cnt?: string | number
   units?: Units
+  lang?: string
 }
 
 export default ($api: AxiosInstance) => {

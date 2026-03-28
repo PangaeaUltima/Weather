@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import IconFavorite from '@/components/icon/IconFavorite.vue';
+import WeatherChart from '@/components/weather/WeatherChart.vue';
 import UiIconButton from '@/components/ui/UiIconButton.vue';
 import { useRepo } from '@/composables/useRepo';
 import type { ForecastData } from '@/api/forecast';
 import type { WeatherData } from '@/api/weather';
 import type { Coords } from '@/types';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import dayjs from '@/plugins/dayjs'
+import { useI18n } from 'vue-i18n';
 import { useFavoriteStore } from '@/stores/favorite';
 
 const props = defineProps<{
   coords: Coords
 }>()
 
+const { locale } = useI18n()
 const favoriteStore = useFavoriteStore()
 const { forecastRepo, weatherRepo } = useRepo()
 
@@ -20,6 +23,18 @@ const currentWeather = ref<WeatherData | null>(null)
 const forecast = ref<ForecastData | null>(null)
 
 onMounted(() => loadWeather())
+
+const chartData = computed(() => {
+  if (!forecast.value) return null
+
+  return {
+    labels: forecast.value.list.map(el => dayjs(el.dt_txt).format('HH:mm')),
+    datasets: [{
+      label: 'My First Dataset',
+      data: forecast.value.list.map(el => el.main.temp)
+    }]
+  }
+})
 
 const currentDayMaxMin = computed(() => {
   if (!forecast.value) return null
@@ -31,10 +46,24 @@ const currentDayMaxMin = computed(() => {
     min: Math.min(...currentDayTempArr).toFixed()
   }
 })
+
+watch(locale, () => {
+  loadWeather()
+})
+
 const loadWeather = async () => {
   try {
-    currentWeather.value = await weatherRepo.weather({ ...props.coords, units: 'metric' })
-    forecast.value = await forecastRepo.forecast({ ...props.coords, cnt: 8, units: 'metric' })
+    currentWeather.value = await weatherRepo.weather({
+      ...props.coords,
+      lang: locale.value === 'ua' ? 'ua, uk' : 'en',
+      units: 'metric'
+    })
+    forecast.value = await forecastRepo.forecast({
+      ...props.coords,
+      cnt: 8,
+      lang: locale.value === 'ua' ? 'ua, uk' : 'en',
+      units: 'metric'
+    })
   } catch (e) {
     console.error(e)
   }
@@ -87,6 +116,7 @@ const loadWeather = async () => {
     </div>
     
     <div class="divider" />
+
     <div class="forecast-list">
       <div
         v-for="(item, index) in forecast.list"
@@ -105,6 +135,12 @@ const loadWeather = async () => {
         <span>{{ item.main.temp.toFixed() }}°</span>
       </div>
     </div>
+
+    <template v-if="chartData">
+      <div class="divider" />
+
+      <WeatherChart :chart-data="chartData" />
+    </template>
   </div>
 </template>
 

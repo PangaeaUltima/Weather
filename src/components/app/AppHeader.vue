@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import AppLangSwitch from '@/components/app/AppLangSwitch.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -15,22 +19,14 @@
         <div class="navigation">
           <nav class="navigation-links">
             <RouterLink :to="{ name: 'Home' }">
-              Головна
+              {{ t('main') }}
             </RouterLink>
             <RouterLink :to="{ name: 'Favorites' }">
-              Вибране
+              {{ t('favorite') }}
             </RouterLink>
           </nav>
 
-          <div class="lang">
-            <span>
-              UA
-            </span>
-            <span>|</span>
-            <span>
-              EN
-            </span>
-          </div>
+          <AppLangSwitch />
         </div>
       </div>
     </div>

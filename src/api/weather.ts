@@ -5,6 +5,7 @@ export type WeatherParams = {
   lat: number
   lon: number
   units?: Units
+  lang?: string
 }
 
 export type WeatherItem = {

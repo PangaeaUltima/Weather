@@ -26,6 +26,7 @@ import AppHeader from '@/components/app/AppHeader.vue';
   flex-direction: column;
   flex-grow: 1;
   width: 100%;
+  padding-bottom: 16px;
 }
 
 .header {
