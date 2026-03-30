@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import IconDelete from '@/components/icon/IconDelete.vue';
 import IconFavorite from '@/components/icon/IconFavorite.vue';
 import WeatherChart from '@/components/weather/WeatherChart.vue';
 import UiIconButton from '@/components/ui/UiIconButton.vue';
@@ -10,6 +11,10 @@ import { computed, ref, watch, onMounted } from 'vue';
 import dayjs from '@/plugins/dayjs'
 import { useI18n } from 'vue-i18n';
 import { useFavoriteStore } from '@/stores/favorite';
+
+const emit = defineEmits<{
+  (e: 'delete'): void
+}>()
 
 const props = defineProps<{
   coords: Coords
@@ -83,15 +88,24 @@ const loadWeather = async () => {
             {{ forecast.city.name }}
           </span>
 
-          <UiIconButton
-            size="24"
-            @click="favoriteStore.toggleFavorite(coords)"
-          >
-            <IconFavorite
-              class="icon-favorite"
-              :outlined="!favoriteStore.isFavorite(coords)"
-            />
-          </UiIconButton>
+          <div class="control-buttons">
+            <UiIconButton
+              size="24"
+              @click="favoriteStore.toggleFavorite(coords)"
+            >
+              <IconFavorite
+                class="icon-favorite"
+                :outlined="!favoriteStore.isFavorite(coords)"
+              />
+            </UiIconButton>
+
+            <UiIconButton
+              size="24"
+              @click="emit('delete')"
+            >
+              <IconDelete class="icon-delete" />
+            </UiIconButton>
+          </div>
         </div>
        
         <span class="current-temp">
@@ -158,6 +172,11 @@ const loadWeather = async () => {
   justify-content: space-between;
 }
 
+.weather-card .control-buttons {
+  display: flex;
+  gap: 2px;
+}
+
 .weather-card .overall-maxmin {
   display: flex;
   flex-direction: column;
@@ -204,5 +223,9 @@ const loadWeather = async () => {
 
 .weather-card.favorite .icon-favorite {
   color: var(--primary);
+}
+
+.weather-card .icon-delete {
+  color: var(--warning);
 }
 </style>

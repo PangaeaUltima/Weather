@@ -8,7 +8,7 @@ const { favorites } = useFavoriteStore()
 <template>
   <section class="favorites-view">
     <div class="container">
-      <WeatherList :cities-coords="favorites" />
+      <WeatherList v-model="favorites" />
     </div>
   </section>
 </template>

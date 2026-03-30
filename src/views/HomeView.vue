@@ -2,14 +2,17 @@
 import HomeFieldCity from '@/components/home/HomeFieldCity.vue';
 import WeatherList from '@/components/weather/WeatherList.vue';
 import { useRepo } from '@/composables/useRepo';
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import type { Coords } from '@/types';
 import { useFavoriteStore } from '@/stores/favorite';
+import { storeToRefs } from 'pinia';
 
 const favoritesStore = useFavoriteStore()
 const { ipRepo } = useRepo()
 
-const citiesCoords = ref<Coords[]>([...favoritesStore.favorites])
+const { favorites } = storeToRefs(favoritesStore)
+
+const citiesCoords = ref<Coords[]>([...favorites.value])
 
 onMounted(() => detectUserCity())
 
@@ -25,6 +28,10 @@ const detectUserCity = async () => {
     console.error(e)
   }
 }
+
+watch(citiesCoords, () => {
+  favorites.value = favorites.value.filter((el) => citiesCoords.value.find(coords => coords.lat === el.lat && coords.lon === el.lon))
+}, { deep: true })
 </script>
 
 <template>
@@ -33,7 +40,7 @@ const detectUserCity = async () => {
       <div class="wrapper">
         <HomeFieldCity v-model="citiesCoords" />
 
-        <WeatherList :cities-coords="citiesCoords" />
+        <WeatherList v-model="citiesCoords" />
       </div>
     </div>
   </section>

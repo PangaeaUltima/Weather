@@ -1,4 +1,8 @@
 {
   "main": "Main",
-  "favorite": "Favorite"
-}
+  "favorite": "Favorite",
+  "confirmAction": "Confirm action",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "search": "Search"
+} 

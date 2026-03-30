@@ -2,6 +2,7 @@
 import UiInput from '@/components/ui/UiInput.vue';
 import { computed, ref, useTemplateRef } from 'vue';
 import { useElementSize } from '@vueuse/core';
+import { useI18n } from 'vue-i18n';
 
 type ObjectItem = Extract<TItem, Record<string, unknown>>;
 type SelectedValue = string | ObjectItem[keyof ObjectItem] | null;
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<{
 const autocompleteInput = useTemplateRef<InstanceType<typeof UiInput>>('refAutocompleteInput')
 const autocompleteInputWrapper = useTemplateRef<HTMLElement>('refAutocompleteInputWrapper')
 const { height: autocompleteInputHeight } = useElementSize(autocompleteInputWrapper)
+const { t } = useI18n()
 
 const inputFocused = ref<boolean>(false)
 const searchQuery = defineModel<string | null>('search', { default: null });
@@ -79,7 +81,7 @@ const keepAutocompleteFocused = (event: MouseEvent) => {
       <UiInput
         ref="refAutocompleteInput"
         v-model="searchQuery"
-        label="Пошук"
+        :label="t('search')"
         @blur="inputFocused = false"
         @focus="inputFocused = true"
       />

@@ -1,20 +1,35 @@
 <script setup lang="ts">
+import ModalConfirm from '@/components/modal/ModalConfirm.vue';
 import WeatherCard from '@/components/weather/WeatherCard.vue';
 import type { Coords } from '@/types';
+import { useTemplateRef } from 'vue';
 
-defineProps<{
-  citiesCoords: Coords[]
-}>()
+const modalConfirm = useTemplateRef('refModalConfirm')
+
+const citiesCoords = defineModel<Coords[]>({ required: true })
+
+const deleteCoords = async (index: number) => {
+  if (await modalConfirm.value?.open()) {
+    console.log('test');
+    
+    citiesCoords.value.splice(index, 1)
+  }
+}
 </script>
 
 <template>
   <div class="weather-list">
     <WeatherCard
       v-for="(coords, index) in citiesCoords"
-      :key="index"
+      :key="`${coords.lat}-${coords.lon}`"
       :coords="coords"
+      @delete="deleteCoords(index)"
     />
   </div>
+  <ModalConfirm
+    ref="refModalConfirm"
+    close-on-overlay
+  />
 </template>
 
 <style scoped>
