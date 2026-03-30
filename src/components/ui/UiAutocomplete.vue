@@ -116,6 +116,8 @@ const keepAutocompleteFocused = (event: MouseEvent) => {
 }
 
 .ui-autocomplete .autocomplete-items {
+  z-index: 9;
+  position: relative;
   background: #FFF;
   position: absolute;
   left: 0;

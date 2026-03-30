@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppLoader from '@/components/app/AppLoader.vue';
 import IconDelete from '@/components/icon/IconDelete.vue';
 import IconFavorite from '@/components/icon/IconFavorite.vue';
 import WeatherChart from '@/components/weather/WeatherChart.vue';
@@ -27,6 +28,8 @@ const { forecastRepo, weatherRepo } = useRepo()
 const currentWeather = ref<WeatherData | null>(null)
 const forecast = ref<ForecastData | null>(null)
 
+const loading = ref<boolean>(true)
+
 onMounted(() => loadWeather())
 
 const chartData = computed(() => {
@@ -44,7 +47,7 @@ const chartData = computed(() => {
 const currentDayMaxMin = computed(() => {
   if (!forecast.value) return null
 
-  const currentDayTempArr = forecast.value.list.map(el => el.main.temp)
+  const currentDayTempArr = forecast.value?.list.map(el => el.main.temp) || [0]
 
   return {
     max: Math.max(...currentDayTempArr).toFixed(),
@@ -71,21 +74,26 @@ const loadWeather = async () => {
     })
   } catch (e) {
     console.error(e)
+  } finally {
+    loading.value = false
   }
 }
 </script>
 
 <template>
   <div
-    v-if="currentWeather && forecast"
     class="weather-card card-shadow"
     :class="{ 'favorite' : favoriteStore.isFavorite(coords) }"
   >
+    <AppLoader
+      v-if="loading"
+      overlay
+    />
     <div class="overall">
       <div class="overall-current-temp">
         <div class="city-name">
           <span>
-            {{ forecast.city.name }}
+            {{ currentWeather?.name || '-------' }}
           </span>
 
           <div class="control-buttons">
@@ -109,46 +117,53 @@ const loadWeather = async () => {
         </div>
        
         <span class="current-temp">
-          {{ currentWeather.main.temp.toFixed() }}°
+          {{ currentWeather?.main.temp.toFixed() || '--' }}°
         </span>
       </div>
 
       <div class="overall-maxmin">
         <div class="wrapper-icon">
           <img
-            :src="`https://openweathermap.org/payload/api/media/file/${currentWeather.weather[0]?.icon}.png`"
+            v-if="currentWeather"
+            :src="`https://openweathermap.org/payload/api/media/file/${currentWeather?.weather[0]?.icon}.png`"
             alt=""
           >
         </div>
 
-        <span>{{ currentWeather.weather[0]?.main }}</span>
+        <span>{{ currentWeather?.weather[0]?.main || '--' }}</span>
 
         <span>
-          {{ `H:${currentDayMaxMin?.max} L:${currentDayMaxMin?.min}` }}
+          {{ `H:${currentDayMaxMin?.max || '--'} L:${currentDayMaxMin?.min || '--'}` }}
         </span>
       </div>
     </div>
-    
-    <div class="divider" />
 
-    <div class="forecast-list">
+    <template v-if="forecast">
+      <div class="divider" />
+
       <div
-        v-for="(item, index) in forecast.list"
-        :key="index"
-        class="forecast-hour"
+        v-if="forecast"
+        class="forecast-list"
       >
-        <span>{{ dayjs(item.dt_txt).format('HH') }}</span>
+        <div
+          v-for="(item, index) in forecast.list"
+          :key="index"
+          class="forecast-hour"
+        >
+          <span>{{ dayjs(item.dt_txt).format('HH') }}</span>
 
-        <div class="wrapper-icon">
-          <img
-            :src="`https://openweathermap.org/payload/api/media/file/${item.weather[0]?.icon}.png`"
-            alt=""
-          >
+          <div class="wrapper-icon">
+            <img
+              :src="`https://openweathermap.org/payload/api/media/file/${item.weather[0]?.icon}.png`"
+              alt=""
+            >
+          </div>
+    
+          <span>{{ item.main.temp.toFixed() }}°</span>
         </div>
-        
-        <span>{{ item.main.temp.toFixed() }}°</span>
       </div>
-    </div>
+    </template>
+    
 
     <template v-if="chartData">
       <div class="divider" />
@@ -160,6 +175,8 @@ const loadWeather = async () => {
 
 <style>
 .weather-card {
+  overflow: hidden;
+  position: relative;
   padding: 16px;
   border-radius: 8px;
   display: flex;

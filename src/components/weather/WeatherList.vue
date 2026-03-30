@@ -34,19 +34,20 @@ const deleteCoords = async (index: number) => {
 
 <style scoped>
 .weather-list {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1160px) {
   .weather-list {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 24px;
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 760px) {
   .weather-list {
     grid-template-columns: 1fr;
     grid-gap: 16px;
