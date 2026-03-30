@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Overlay from './Overlay.vue'
+import AppModalOverlay from '@/components/app/modal/AppModalOverlay.vue'
 
 const props = withDefaults(defineProps<{
   modelValue: boolean
@@ -29,11 +29,9 @@ const onOverlayClick = () => {
     >
       <button
         class="overlay-button"
-        type="button"
-        aria-label="Close modal"
         @click="onOverlayClick"
       >
-        <Overlay />
+        <AppModalOverlay />
       </button>
 
       <div class="content">
